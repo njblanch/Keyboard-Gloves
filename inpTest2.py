@@ -9,11 +9,7 @@ R = .8
 PI = .8
 
 
-serverMac = "192.168.1.114"
-# serverMac = "8c:ae:4c:e1:a0:2f"
-# serverMac = "10.245.124.161/20"
-# serverMac = "ec:2e:98:1c:8d:1b"
-# serverMac = "132.198.201.10" 
+serverMac = 
 port = 50001
 
 #inp1 = MCP3008(channel=0, device=0)
