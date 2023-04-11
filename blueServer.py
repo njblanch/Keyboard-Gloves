@@ -26,7 +26,7 @@ UP = 1
 
 # Use these threshold values to create states (aka finger positions)
 # When these positions change, then take an input, or nothing if neutral
-def get_state(stringPos):
+def getState(stringPos):
     stringPos = stringPos.split(",")
     # sometimes the socket will send more than one set of states at once
     # This can still be accepted since this will only take the first set of
@@ -80,8 +80,8 @@ def main():
             if data2:
                 data2 = data2.decode('utf-8')
             print(f"rh: {str(data1):10}  lh: {str(data2):10}")
-            state1 = get_state(data1)
-            state2 = get_state(data2)
+            state1 = getState(data1)
+            state2 = getState(data2)
             if state1 != stateCheck1:
                 typeOutput(state1, state2)
                 stateCheck1 = state1
