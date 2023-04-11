@@ -2,7 +2,7 @@ import socket
 
 port1 = 50001
 port2 = 50002
-macAddress = "10.245.124.161"
+macAddress = 
 backlog = 5
 size = 1024
 
