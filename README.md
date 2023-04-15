@@ -1,7 +1,7 @@
 # Keyboard-Gloves
 ### Skyler Heininger and Nathan Blanchard
 
-The programs present within this repository are testing and final scripts. 
+The programs present within this repository are testing and final scripts. Additionally, there are 11 STL files that were used in 3d printing.
 
 
 ## Raspberry Pi Programs
