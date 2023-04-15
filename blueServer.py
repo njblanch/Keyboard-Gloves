@@ -1,28 +1,19 @@
 import socket
 
+# All socket server scripting is taken from this guide:
+# https://realpython.com/python-sockets/#multi-connection-client-and-server
+
 # Right hand is port 50001, Left hand 50002
 port1 = 50001
 port2 = 50002
+# Mac address is the IPV4 wifi address of the host computer. 
 macAddress = ""
 backlog = 5
 size = 1024
 
-# threshold values for different fingers, are resistance
-T1 = .1
-T2 = .9
-P1 = .1
-P2 = .9
-M1 = .1
-M2 = .9
-R1 = .1
-R2 = .9
-Pi1 = .1
-Pi2 = .9
-
-# Values for up, neutral down
-DOWN = -1
+# Values for neutral, down
 NEUTRAL = 0
-UP = 1
+PRESS = 1
 
 # Use these threshold values to create states (aka finger positions)
 # When these positions change, then take an input, or nothing if neutral
@@ -40,6 +31,8 @@ def getState(stringPos):
     piPos = float(stringPos[4])
     return tPos, pPos, mPos, rPos, piPos
 
+# typeOutput simply takes in the data of the right and left hands, 
+# and then determines what to type.
 def typeOutput(rtuple, ltuple):
     print("changed")
     print(rtuple)
@@ -50,6 +43,7 @@ def typeOutput(rtuple, ltuple):
 
 def main():
     # s1 is right hand, s2 left hand
+    
     s1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s1.bind((macAddress, port1))
     s1.listen(backlog)
@@ -68,11 +62,16 @@ def main():
     data1 = "1,1,1,1,1,"
     data2 = "1,1,1,1,1,"
 
+    # Try except statement with embedded loop is the entire server. 
     try:
+        # Make connection with the two raspberry pis
         client1, address1 = s1.accept()
         client2, address2 = s2.accept()
         print("Accepted both connections")
+        # Infinite while loop unless terminated by a crash on any of the 3 computers or
+        # a given input results in a break
         while 1:
+            # receiving the data and parsing it
             data1 = client1.recv(size)
             data2 = client2.recv(size)
             if data1:
@@ -82,17 +81,21 @@ def main():
             print(f"rh: {str(data1):10}  lh: {str(data2):10}")
             state1 = getState(data1)
             state2 = getState(data2)
+            
+            # If the right hand changes in state, then go to type something.
+            # This is only for the right hand since the left hand is needed for 
+            # changing what the right hand can type.
             if state1 != stateCheck1:
                 typeOutput(state1, state2)
+                # updating statechecks so can determine the next time the right hand changes
                 stateCheck1 = state1
                 stateCheck2 = state2
     except:
+        # Close everything down
         print("Closing socket")
         client1.close()
         s1.close()
         client2.close()
         s2.close()
-    print("passed")
-
 
 main()
