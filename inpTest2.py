@@ -15,8 +15,10 @@ PI = .8
 # https://realpython.com/python-sockets/#multi-connection-client-and-server
 
 # The mac address is simply a string of the IPV4 address of the devices WIFI chip
-serverMac = 
-port = 50001
+serverMac = ""
+# port = 50001
+# or
+# port = 50002
 
 # Initialize MCP3008 channels
 inp1 = MCP3008(channel=0, clock_pin=11, mosi_pin=10, miso_pin=9, select_pin=8)
@@ -26,8 +28,14 @@ inp4 = MCP3008(channel=3, clock_pin=11, mosi_pin=10, miso_pin=9, select_pin=8)
 inp5 = MCP3008(channel=4, clock_pin=11, mosi_pin=10, miso_pin=9, select_pin=8)
 
 
+connected = False
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((serverMac, port))
+while not connected:
+    try:
+        s.connect((serverMac, port))
+        connected = True
+    except:
+        continue
 while 1:
     # string1 is simply the string values, it can be ommitted in this iteration
     # Ommitting this hardly saves time, this is still incredibly fast and 

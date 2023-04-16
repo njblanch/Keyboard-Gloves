@@ -1,9 +1,10 @@
 import socket
+import pyautogui
 
 # All socket server scripting is taken from this guide:
 # https://realpython.com/python-sockets/#multi-connection-client-and-server
 
-# Right hand is port 50001, Left hand 50002
+# Left hand is port 50001, Right hand 50002
 port1 = 50001
 port2 = 50002
 # Mac address is the IPV4 wifi address of the host computer. 
@@ -15,6 +16,8 @@ size = 1024
 NEUTRAL = 0
 PRESS = 1
 
+# Dictionary for determining output
+keyDict = {"0,0,0,1,0,0,1,0,0,0,":"u"}
 # Use these threshold values to create states (aka finger positions)
 # When these positions change, then take an input, or nothing if neutral
 def getState(stringPos):
@@ -31,14 +34,19 @@ def getState(stringPos):
     piPos = float(stringPos[4])
     return tPos, pPos, mPos, rPos, piPos
 
-# typeOutput simply takes in the data of the right and left hands, 
+
+# typeOutput simply takes in the data of the right and left hands,
 # and then determines what to type.
-def typeOutput(rtuple, ltuple):
-    print("changed")
-    print(rtuple)
-    if rtuple == (0, 0, 0, 0, 0) and ltuple == (0, 0, 0, 0, 0):
-        print("neutral")
+def typeOutput(key):
+#    print("changed")
+#    print(rtuple)
+#    if rtuple == (0, 0, 0, 0, 0) and ltuple == (0, 0, 0, 0, 0):
+#        print("neutral")
+    try:
+        pyautogui.write(keyDict.get(key))
+    except:
         return
+    return
 
 
 def main():
@@ -66,6 +74,7 @@ def main():
     try:
         # Make connection with the two raspberry pis
         client1, address1 = s1.accept()
+        print("First connection accepted")
         client2, address2 = s2.accept()
         print("Accepted both connections")
         # Infinite while loop unless terminated by a crash on any of the 3 computers or
@@ -78,15 +87,15 @@ def main():
                 data1 = data1.decode('utf-8')
             if data2:
                 data2 = data2.decode('utf-8')
-            print(f"rh: {str(data1):10}  lh: {str(data2):10}")
+            print(f"lh: {str(data1):10}  rh: {str(data2):10}")
             state1 = getState(data1)
             state2 = getState(data2)
             
             # If the right hand changes in state, then go to type something.
             # This is only for the right hand since the left hand is needed for 
             # changing what the right hand can type.
-            if state1 != stateCheck1:
-                typeOutput(state1, state2)
+            if state2 != stateCheck2:
+                typeOutput(f"{str(data1):10}{str(data2):10}")
                 # updating statechecks so can determine the next time the right hand changes
                 stateCheck1 = state1
                 stateCheck2 = state2
