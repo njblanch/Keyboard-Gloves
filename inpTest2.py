@@ -2,6 +2,8 @@ from time import sleep
 from gpiozero import MCP3008
 import socket
 
+# Default threshold values
+# These need to be adjusted for each user depending on hand size
 T = .8
 P = .8
 M = .8

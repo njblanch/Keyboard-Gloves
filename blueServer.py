@@ -72,15 +72,14 @@ def typeOutput(key):
     except:
         return
     return
-
+''
 
 def main():
-    # s1 is right hand, s2 left hand
-    
+
+    # s1 is left hand, s2 right hand
     s1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s1.bind((macAddress, port1))
     s1.listen(backlog)
-
     s2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s2.bind((macAddress, port2))
     s2.listen(backlog)

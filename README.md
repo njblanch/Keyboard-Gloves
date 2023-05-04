@@ -24,3 +24,11 @@ tuples that were returned from running getState on inputs from each raspberry pi
 The TCP connection was handled in main, using the socket package and two different ports to accommodate 
 two simultaneously-running socket connections. At any point, if a socket server fails, or any of the programs
 are terminated, all the socket connections are closed and programs are terminated.
+
+## Keyboard Gloves Commands
+All commands/gestures for the keyboard gloves, as well as a brief explanation of how this layout works, can be found 
+in the "Keyboard Gloves Layout.docx" document. The user should read this document before using the keyboard gloves to 
+better understand functionality and learn what inputs are available and the gestures required to type them.
+
+## stl Files
+All stl files that were printed and included in the final version of they Keyboard Gloves have been included in the "stl files" folder. 
